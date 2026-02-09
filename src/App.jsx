@@ -147,17 +147,27 @@ function App() {
 
   const filteredDoors = useMemo(() => {
     return Object.keys(data)
-      .filter(id => id.startsWith(activeBlock))
+      .filter(id => {
+        // Eğer arama kutusu doluysa, blok filtresini görmezden gel ve her yerde ara
+        if (search.trim()) return true;
+        // Arama kutusu boşsa sadece seçili bloğu göster
+        return id.startsWith(activeBlock);
+      })
       .filter(id => {
         const item = data[id];
-        const searchStr = search.toLowerCase();
-        const matchesSearch = id.toLowerCase().includes(searchStr) || 
+        const searchStr = search.toLowerCase().trim();
+        const matchesSearch = !searchStr || 
+                             id.toLowerCase().includes(searchStr) || 
                              (item.note && item.note.toLowerCase().includes(searchStr)) ||
                              (item.name && item.name.toLowerCase().includes(searchStr));
         const matchesStatus = statusFilter === 'all' || item.status === statusFilter;
         return matchesSearch && matchesStatus;
       })
       .sort((a, b) => {
+        const blockA = a[0];
+        const blockB = b[0];
+        if (blockA !== blockB) return blockA.localeCompare(blockB);
+        
         const numA = parseInt(a.substring(1));
         const numB = parseInt(b.substring(1));
         return numA - numB;
