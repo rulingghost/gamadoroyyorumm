@@ -179,20 +179,31 @@ button, .pill, .vote-btn, .block-tab {
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-.stat-item {
-  background: rgba(255, 255, 255, 0.03);
-  padding: 1rem;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 0.75rem;
   border-radius: 16px;
-  text-align: center;
   border: 1px solid var(--border-color);
 }
 
-.stat-val { font-size: 1.6rem; font-weight: 900; display: block; }
-.stat-lbl { font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+.stat-item {
+  text-align: center;
+  position: relative;
+}
+
+.stat-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: -0.25rem;
+  top: 20%;
+  bottom: 20%;
+  width: 1px;
+  background: var(--border-color);
+}
+
+.stat-val { font-size: 1.2rem; font-weight: 900; display: block; line-height: 1.2; }
+.stat-lbl { font-size: 0.6rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
 
 .progress-bar-container {
   height: 8px;
@@ -353,10 +364,10 @@ button, .pill, .vote-btn, .block-tab {
   .container { padding: 0 1rem; }
   .sticky-header { padding: 0.5rem 0; }
   .header-top h1 { font-size: 1.2rem; }
-  .stats-grid { gap: 0.5rem; }
-  .stat-item { padding: 0.5rem; border-radius: 12px; }
-  .stat-val { font-size: 1.1rem; }
-  .stat-lbl { font-size: 0.6rem; }
+  .stats-grid { padding: 0.6rem; margin-bottom: 0.6rem; }
+  .stat-val { font-size: 1rem; }
+  .stat-lbl { font-size: 0.55rem; }
+  .stat-item:not(:last-child)::after { right: -0.25rem; }
   .controls { grid-template-columns: 1fr; gap: 0.8rem; }
   .search-wrap input { padding: 0.7rem 1rem 0.7rem 2.8rem; font-size: 0.9rem; }
   .filter-pills { overflow-x: auto; padding-bottom: 5px; scrollbar-width: none; }
