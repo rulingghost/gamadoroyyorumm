@@ -12,13 +12,13 @@ files.forEach(file => {
   const workbook = XLSX.readFile(file.path);
   const sheetName = workbook.SheetNames[0];
   const worksheet = workbook.Sheets[sheetName];
-  // header: 1 means headers are in the first row
   const data = XLSX.utils.sheet_to_json(worksheet);
   
-  data.forEach(row => {
-    const daireNo = row['Daire'];
-    const adSoyad = row['Ad Soyad'] || '';
-    if (daireNo) {
+  data.forEach((row) => {
+    const daireNo = row['Daire'] || row['DAİRE'] || row['no'] || row['No'];
+    const adSoyad = row['Ad Soyad'] || row['AD SOYAD'] || row['İsim'] || row['Müşteri Adı'];
+    
+    if (daireNo && adSoyad) {
       const id = `${file.block}${daireNo}`;
       residentMap[id] = adSoyad;
     }
@@ -26,4 +26,5 @@ files.forEach(file => {
 });
 
 fs.writeFileSync('resident_data.json', JSON.stringify(residentMap, null, 2));
-console.log('Successfully extracted data to resident_data.json');
+fs.writeFileSync('src/residents.js', `export const residents = ${JSON.stringify(residentMap, null, 2)};`);
+console.log(`Total residents found and saved: ${Object.keys(residentMap).length}`);
