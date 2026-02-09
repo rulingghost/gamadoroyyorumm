@@ -156,10 +156,11 @@ function App() {
       .filter(id => {
         const item = data[id];
         const searchStr = search.toLowerCase().trim();
+        const residentName = item.name || residents[id] || '';
         const matchesSearch = !searchStr || 
                              id.toLowerCase().includes(searchStr) || 
                              (item.note && item.note.toLowerCase().includes(searchStr)) ||
-                             (item.name && item.name.toLowerCase().includes(searchStr));
+                             (residentName.toLowerCase().includes(searchStr));
         const matchesStatus = statusFilter === 'all' || item.status === statusFilter;
         return matchesSearch && matchesStatus;
       })
@@ -283,7 +284,7 @@ function App() {
               <div className="card-head">
                 <div style={{display: 'flex', flexDirection: 'column'}}>
                   <div className="door-tag" style={{marginBottom: 4}}>{id} <span>DAİRE</span></div>
-                  <div style={{fontSize: '0.85rem', fontWeight: '700', color: 'var(--accent-yellow)'}}>{data[id].name || 'İsimsiz'}</div>
+                  <div style={{fontSize: '0.8rem', fontWeight: '700', color: 'var(--accent-yellow)'}}>{data[id].name || residents[id] || 'İsimsiz'}</div>
                 </div>
                 <div className={`status-indicator ${data[id].status}`}></div>
               </div>
