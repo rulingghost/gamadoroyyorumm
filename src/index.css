@@ -361,27 +361,83 @@ button, .pill, .vote-btn, .block-tab {
 
 /* MOBILE COMPACT STYLES */
 @media (max-width: 600px) {
-  .container { padding: 0 1rem; }
-  .sticky-header { padding: 0.5rem 0; }
-  .header-top h1 { font-size: 1.2rem; }
-  .stats-grid { padding: 0.6rem; margin-bottom: 0.6rem; }
-  .stat-val { font-size: 1rem; }
-  .stat-lbl { font-size: 0.55rem; }
-  .stat-item:not(:last-child)::after { right: -0.25rem; }
-  .controls { grid-template-columns: 1fr; gap: 0.8rem; }
-  .search-wrap input { padding: 0.7rem 1rem 0.7rem 2.8rem; font-size: 0.9rem; }
-  .filter-pills { overflow-x: auto; padding-bottom: 5px; scrollbar-width: none; }
-  .filter-pills::-webkit-scrollbar { display: none; }
-  .pill { padding: 0.5rem 1rem; font-size: 0.8rem; }
-  .door-grid { gap: 0.8rem; padding: 1rem 0; }
-  .card { padding: 1rem; padding-left: 1.6rem; border-radius: 16px; }
-  .door-tag { font-size: 1.3rem; }
-  .vote-btns { margin: 0.8rem 0; gap: 0.5rem; }
-  .vote-btn { padding: 0.8rem 0.3rem; font-size: 0.65rem; border-radius: 10px; }
-  .note-input { min-height: 80px; font-size: 0.9rem; }
+  .container { padding: 0 1.2rem; }
+  .sticky-header { padding: 0.6rem 0; background: rgba(13, 17, 23, 0.95); }
   
-  .login-card { padding: 2rem; border-radius: 20px; }
-  .login-card h2 { font-size: 1.8rem; }
+  .header-top { 
+    flex-direction: row; 
+    align-items: center; 
+    gap: 0.5rem;
+    margin-bottom: 0.8rem;
+  }
+  
+  .header-top h1 { font-size: 1.1rem; letter-spacing: -0.5px; }
+  
+  .block-tabs { 
+    background: rgba(255, 255, 255, 0.05);
+    padding: 2px;
+    border-radius: 12px;
+  }
+  
+  .block-tab { 
+    padding: 0.4rem 1rem; 
+    font-size: 0.75rem; 
+    border-radius: 10px;
+  }
+
+  .stats-grid { 
+    padding: 0.8rem; 
+    margin-bottom: 0.8rem; 
+    border-radius: 20px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
+  }
+  
+  .stat-val { font-size: 1.1rem; }
+  .stat-lbl { font-size: 0.6rem; color: var(--text-secondary); }
+  
+  .controls { gap: 0.8rem; }
+  .search-wrap input { 
+    padding: 0.8rem 1rem 0.8rem 2.8rem; 
+    font-size: 0.95rem; 
+    border-radius: 16px;
+    background: #000;
+  }
+  
+  .pill { 
+    padding: 0.6rem 1.2rem; 
+    font-size: 0.85rem; 
+    border-radius: 100px;
+  }
+
+  .door-grid { gap: 1rem; padding: 1rem 0; }
+  
+  .card { 
+    padding: 1.2rem; 
+    padding-left: 1.8rem; 
+    border-radius: 24px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  }
+  
+  .door-tag { font-size: 1.4rem; }
+  
+  .vote-btns { margin: 1.2rem 0; gap: 0.6rem; }
+  .vote-btn { 
+    padding: 1rem 0.4rem; 
+    font-size: 0.7rem; 
+    border-radius: 16px; 
+    background: rgba(255,255,255,0.03);
+  }
+  
+  .vote-btn svg { width: 22px; height: 22px; }
+  
+  .note-input { 
+    min-height: 90px; 
+    font-size: 1rem; 
+    border-radius: 16px;
+    padding: 1rem;
+  }
+  
+  .login-card { padding: 2.5rem 1.5rem; border-radius: 32px; }
 }
 
 @keyframes fadeIn {
