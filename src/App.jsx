@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Search, Check, X, HelpCircle, Download, Trash2, LayoutGrid, Cloud, CloudOff, Loader2, LogOut, User, Lock, RefreshCw } from 'lucide-react';
+import { Search, Check, X, HelpCircle, Download, Trash2, LayoutGrid, Cloud, CloudOff, Loader2, LogOut, User, Lock, RefreshCw, Phone, PhoneCall } from 'lucide-react';
 import { db, ref, onValue, update, set } from './firebase';
 import { residents } from './residents';
 import './index.css';
@@ -119,6 +119,19 @@ function App() {
     setIsSyncing(false);
   };
 
+  const updatePhone = async (id, phone) => {
+    setIsSyncing(true);
+    try {
+      await update(ref(db, `daireler/${id}`), {
+        phone,
+        updatedAt: Date.now()
+      });
+    } catch (err) {
+      console.error("Telefon hatası:", err);
+    }
+    setIsSyncing(false);
+  };
+
   const clearData = async () => {
     if (window.confirm('Veritabanını sıfırlamak istediğinize emin misiniz?')) {
       setIsSyncing(true);
@@ -126,7 +139,13 @@ function App() {
       Object.entries(BLOCKS).forEach(([block, count]) => {
         for (let i = 1; i <= count; i++) {
           const id = `${block}${i}`;
-          initial[id] = { status: 'uncertain', note: '', name: residents[id] || '', updatedAt: Date.now() };
+          initial[id] = { 
+            status: 'uncertain', 
+            note: '', 
+            name: residents[id] || '', 
+            phone: '',
+            updatedAt: Date.now() 
+          };
         }
       });
       await set(ref(db, 'daireler'), initial);
@@ -160,7 +179,8 @@ function App() {
         const matchesSearch = !searchStr || 
                              id.toLowerCase().includes(searchStr) || 
                              (item.note && item.note.toLowerCase().includes(searchStr)) ||
-                             (residentName.toLowerCase().includes(searchStr));
+                             (residentName.toLowerCase().includes(searchStr)) ||
+                             (item.phone && item.phone.includes(searchStr));
         const matchesStatus = statusFilter === 'all' || item.status === statusFilter;
         return matchesSearch && matchesStatus;
       })
@@ -293,6 +313,30 @@ function App() {
                 <button className={`vote-btn ${data[id].status === 'no' ? 'active no' : ''}`} onClick={() => updateStatus(id, 'no')}><X size={20} /> HAYIR</button>
                 <button className={`vote-btn ${data[id].status === 'uncertain' ? 'active uncertain' : ''}`} onClick={() => updateStatus(id, 'uncertain')}><HelpCircle size={20} /> BELİRSİZ</button>
               </div>
+
+              <div style={{display: 'flex', gap: '0.5rem', marginBottom: '0.8rem'}}>
+                <div style={{position: 'relative', flex: 1}}>
+                  <Phone size={14} style={{position: 'absolute', left: '0.8rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)'}} />
+                  <input 
+                    type="tel" 
+                    className="note-input" 
+                    style={{minHeight: 'unset', padding: '0.6rem 0.8rem 0.6rem 2.2rem', fontSize: '0.85rem'}}
+                    placeholder="Telefon No..." 
+                    value={data[id].phone || ''} 
+                    onChange={e => updatePhone(id, e.target.value)} 
+                  />
+                </div>
+                {data[id].phone && (
+                  <a 
+                    href={`tel:${data[id].phone}`} 
+                    className="vote-btn" 
+                    style={{minHeight: 'unset', padding: '0.6rem 0.8rem', background: 'var(--accent-green)', color: 'white', border: 'none'}}
+                  >
+                    <PhoneCall size={16} />
+                  </a>
+                )}
+              </div>
+
               <div className="note-wrap">
                 <textarea className="note-input" placeholder="Görüşme notunu buraya yazın..." value={data[id].note} onChange={e => updateNote(id, e.target.value)} />
               </div>
