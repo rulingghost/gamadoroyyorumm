@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Search, Check, X, HelpCircle, Download, Trash2, LayoutGrid, Cloud, CloudOff, Loader2, LogOut, User, Lock } from 'lucide-react';
+import { Search, Check, X, HelpCircle, Download, Trash2, LayoutGrid, Cloud, CloudOff, Loader2, LogOut, User, Lock, RefreshCw } from 'lucide-react';
 import { db, ref, onValue, update, set } from './firebase';
+import { residents } from './residents';
 import './index.css';
 
 const BLOCKS = {
@@ -51,9 +52,11 @@ function App() {
         const initial = {};
         Object.entries(BLOCKS).forEach(([block, count]) => {
           for (let i = 1; i <= count; i++) {
-            initial[`${block}${i}`] = {
+            const id = `${block}${i}`;
+            initial[id] = {
               status: 'uncertain',
               note: '',
+              name: residents[id] || '',
               updatedAt: Date.now()
             };
           }
@@ -71,6 +74,20 @@ function App() {
 
     return () => unsubscribe();
   }, [isAuthenticated]);
+
+  const syncNames = async () => {
+    if (window.confirm('Excel dosyasındaki isimleri veritabanına aktarmak istiyor musunuz? Mevcut isimler güncellenecektir.')) {
+      setIsSyncing(true);
+      const updates = {};
+      Object.keys(data).forEach(id => {
+        if (residents[id]) {
+          updates[`daireler/${id}/name`] = residents[id];
+        }
+      });
+      await update(ref(db), updates);
+      setIsSyncing(false);
+    }
+  };
 
   useEffect(() => {
     localStorage.setItem('gamador_active_block', activeBlock);
@@ -108,7 +125,8 @@ function App() {
       const initial = {};
       Object.entries(BLOCKS).forEach(([block, count]) => {
         for (let i = 1; i <= count; i++) {
-          initial[`${block}${i}`] = { status: 'uncertain', note: '', updatedAt: Date.now() };
+          const id = `${block}${i}`;
+          initial[id] = { status: 'uncertain', note: '', name: residents[id] || '', updatedAt: Date.now() };
         }
       });
       await set(ref(db, 'daireler'), initial);
@@ -132,8 +150,10 @@ function App() {
       .filter(id => id.startsWith(activeBlock))
       .filter(id => {
         const item = data[id];
-        const matchesSearch = id.toLowerCase().includes(search.toLowerCase()) || 
-                             (item.note && item.note.toLowerCase().includes(search.toLowerCase()));
+        const searchStr = search.toLowerCase();
+        const matchesSearch = id.toLowerCase().includes(searchStr) || 
+                             (item.note && item.note.toLowerCase().includes(searchStr)) ||
+                             (item.name && item.name.toLowerCase().includes(searchStr));
         const matchesStatus = statusFilter === 'all' || item.status === statusFilter;
         return matchesSearch && matchesStatus;
       })
@@ -251,7 +271,10 @@ function App() {
           {filteredDoors.length > 0 ? filteredDoors.map(id => (
             <div key={id} className="card">
               <div className="card-head">
-                <div className="door-tag">{id} <span>DAİRE</span></div>
+                <div style={{display: 'flex', flexDirection: 'column'}}>
+                  <div className="door-tag" style={{marginBottom: 4}}>{id} <span>DAİRE</span></div>
+                  <div style={{fontSize: '0.85rem', fontWeight: '700', color: 'var(--accent-yellow)'}}>{data[id].name || 'İsimsiz'}</div>
+                </div>
                 <div className={`status-indicator ${data[id].status}`}></div>
               </div>
               <div className="vote-btns">
@@ -277,7 +300,10 @@ function App() {
 
         <div style={{marginTop: '5rem', borderTop: '1px solid var(--border-color)', paddingTop: '3rem', paddingBottom: '5rem', textAlign: 'center'}}>
           <p style={{color: 'var(--text-secondary)', marginBottom: '1.5rem', fontSize: '0.9rem'}}>Veri Yönetimi ve Güvenlik</p>
-          <div style={{display: 'flex', gap: '1rem', justifyContent: 'center'}}>
+          <div style={{display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap'}}>
+            <button className="pill" onClick={syncNames}>
+              <RefreshCw size={16} style={{marginRight: 8}} /> İsimleri Senkronize Et
+            </button>
             <button className="pill" onClick={() => {
                 const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
                 const url = URL.createObjectURL(blob);
