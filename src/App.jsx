@@ -74,7 +74,10 @@ function App() {
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [isSyncing, setIsSyncing] = useState(false);
-  const [isCollapsed, setIsCollapsed] = useState(() => localStorage.getItem('gamador_collapsed') === 'true');
+  const [isCollapsed, setIsCollapsed] = useState(() => {
+    const saved = localStorage.getItem('gamador_collapsed');
+    return saved !== null ? saved === 'true' : true;
+  });
   const [error, setError] = useState(null);
   const [copySuccess, setCopySuccess] = useState(null);
 

@@ -618,46 +618,60 @@ button, .pill, .vote-btn, .block-tab {
   .filter-label { font-size: 0.6rem; padding-left: 0.25rem; }
 
   .filter-pills {
+    display: flex;
     overflow-x: auto;
     scrollbar-width: none;
     padding: 2px;
+    gap: 0.3rem;
   }
   .filter-pills::-webkit-scrollbar { display: none; }
 
   .pill { 
-    padding: 0.4rem 0.8rem; 
-    font-size: 0.75rem; 
+    padding: 0.3rem 0.6rem; 
+    font-size: 0.65rem; 
     border-radius: 8px;
     flex-shrink: 0;
   }
 
   .sort-select { 
-    padding: 0.7rem; 
-    font-size: 0.85rem; 
-    border-radius: 12px;
+    padding: 0.5rem; 
+    font-size: 0.8rem; 
+    border-radius: 10px;
   }
  
   .door-grid { 
-    gap: 1rem; 
-    padding: 1rem 0; 
-    grid-template-columns: 1fr; 
+    gap: 0.6rem; 
+    padding: 0.75rem 0; 
+    grid-template-columns: repeat(2, 1fr); 
   }
   
   .card { 
-    padding: 1.25rem; 
-    padding-left: 1.75rem; 
-    border-radius: 20px; 
+    padding: 0.75rem; 
+    padding-left: 1.1rem; 
+    border-radius: 16px; 
+    min-height: unset;
   }
   
   .card.is-tenant::after { 
-    top: 8px; 
-    right: -32px; 
-    font-size: 0.55rem; 
-    padding: 4px 35px; 
+    top: 6px; 
+    right: -28px; 
+    font-size: 0.45rem; 
+    padding: 2px 30px; 
   }
   
-  .door-tag { font-size: 1.4rem; }
-  .note-input { min-height: 70px; font-size: 0.9rem; padding: 0.75rem; }
+  .door-tag { font-size: 1.1rem; margin-bottom: 0; }
+  .door-tag span { font-size: 0.6rem; margin-left: 0.2rem; }
+  
+  .residency-toggle { margin: 0.6rem 0 0.5rem 0; border-radius: 8px; padding: 2px; }
+  .residency-btn { padding: 0.3rem; font-size: 0.55rem; border-radius: 6px; }
+
+  .vote-btns { margin: 0.6rem 0; gap: 0.3rem; }
+  .vote-btn { padding: 0.6rem 0.2rem; font-size: 0.6rem; border-radius: 10px; gap: 0.3rem; }
+  .vote-btn svg { width: 15px; height: 15px; }
+  
+  .note-input { min-height: 50px; font-size: 0.8rem; padding: 0.5rem; border-radius: 10px; }
+  
+  .card-meta { font-size: 0.55rem; margin-top: 0.5rem; }
   .login-card { padding: 2.5rem 1.5rem; border-radius: 28px; }
 }
 
