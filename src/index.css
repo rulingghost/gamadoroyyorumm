@@ -394,20 +394,60 @@ button, .pill, .vote-btn, .block-tab {
   
   .stat-val { font-size: 0.95rem; }
   .stat-lbl { font-size: 0.55rem; color: var(--text-secondary); }
-  
-  .controls { gap: 0.6rem; }
-  .search-wrap input { 
-    padding: 0.65rem 1rem 0.65rem 2.6rem; 
-    font-size: 0.9rem; 
-    border-radius: 12px;
-    background: #000;
-    color: #fff; /* Yazılan yazının okunması için beyaz yapıldı */
-  }
-  
+  .stat-item:not(:last-child)::after { right: -0.25rem; }
+
   .pill { 
     padding: 0.5rem 1rem; 
     font-size: 0.8rem; 
     border-radius: 100px;
+  }
+
+  .controls { 
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+    width: 100%;
+  }
+
+  .search-wrap { 
+    flex: 1;
+    transition: flex 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .filter-pills {
+    display: flex;
+    gap: 0.4rem;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+  }
+
+  /* Tıklayınca Uzayan Arama Kutusu */
+  .search-wrap:focus-within {
+    flex: 100;
+  }
+
+  .search-wrap:focus-within + .filter-pills {
+    width: 0;
+    opacity: 0;
+    pointer-events: none;
+    margin: 0;
+    transform: translateX(20px);
+  }
+  
+  .search-wrap input { 
+    width: 100%;
+    padding: 0.7rem 1rem 0.7rem 2.6rem; 
+    font-size: 1rem; /* Okunurluk için biraz büyütüldü */
+    border-radius: 14px;
+    background: #000;
+    color: #ffffff !important; /* Net beyaz yazı */
+    border: 1px solid var(--border-color);
+  }
+  
+  .search-wrap input:focus {
+    border-color: var(--accent-yellow);
+    box-shadow: 0 0 0 4px rgba(227, 179, 65, 0.15);
   }
 
   .door-grid { gap: 0.75rem; padding: 0.8rem 0; }
