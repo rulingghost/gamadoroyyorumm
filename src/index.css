@@ -378,7 +378,9 @@ button, .pill, .vote-btn, .block-tab {
 .pill.active.no { background: var(--accent-red); color: white; }
 .pill.active.uncertain { background: var(--accent-yellow); color: black; }
 .pill.active.owner { background: var(--border-color); color: white; }
-.pill.active.tenant { background: var(--accent-blue); color: white; box-shadow: 0 0 10px rgba(59, 130, 246, 0.5); }
+  .pill.active.tenant { background: var(--accent-blue); color: white; box-shadow: 0 0 10px rgba(59, 130, 246, 0.5); }
+  .pill.active.has { background: var(--accent-blue); color: white; }
+  .pill.active.none { background: var(--border-color); color: white; }
 
 .door-grid {
   display: grid;

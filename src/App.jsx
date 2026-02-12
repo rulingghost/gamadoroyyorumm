@@ -70,6 +70,8 @@ function App() {
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [residencyFilter, setResidencyFilter] = useState('all');
+  const [phoneFilter, setPhoneFilter] = useState('all');
+  const [noteFilter, setNoteFilter] = useState('all');
   const [sortBy, setSortBy] = useState('door'); // 'door', 'recent'
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -281,8 +283,24 @@ function App() {
         } else if (residencyFilter === 'owner') {
           matchesResidency = item.residencyType === 'owner' || !item.residencyType;
         }
+
+        // 5. Telefon Filtresi
+        let matchesPhone = true;
+        if (phoneFilter === 'has') {
+          matchesPhone = !!item.phone;
+        } else if (phoneFilter === 'none') {
+          matchesPhone = !item.phone;
+        }
+
+        // 6. Not Filtresi
+        let matchesNote = true;
+        if (noteFilter === 'has') {
+          matchesNote = !!item.note;
+        } else if (noteFilter === 'none') {
+          matchesNote = !item.note;
+        }
         
-        return matchesBlock && matchesSearch && matchesStatus && matchesResidency;
+        return matchesBlock && matchesSearch && matchesStatus && matchesResidency && matchesPhone && matchesNote;
       })
       .sort((a, b) => {
         if (sortBy === 'recent') {
@@ -297,7 +315,7 @@ function App() {
         const numB = parseInt(b.substring(1));
         return numA - numB;
       });
-  }, [data, activeBlock, search, statusFilter, residencyFilter, sortBy]);
+  }, [data, activeBlock, search, statusFilter, residencyFilter, phoneFilter, noteFilter, sortBy]);
 
   if (!isAuthenticated) {
     return (
@@ -415,6 +433,24 @@ function App() {
                   <button className={`pill all ${residencyFilter === 'all' ? 'active' : ''}`} onClick={() => setResidencyFilter('all')}>HEPSİ</button>
                   <button className={`pill owner ${residencyFilter === 'owner' ? 'active' : ''}`} onClick={() => setResidencyFilter('owner')}>EV SAHİBİ</button>
                   <button className={`pill tenant ${residencyFilter === 'tenant' ? 'active' : ''}`} onClick={() => setResidencyFilter('tenant')}>KİRACI</button>
+                </div>
+              </div>
+
+              <div className="filter-group">
+                <span className="filter-label">TELEFON</span>
+                <div className="filter-pills">
+                  <button className={`pill all ${phoneFilter === 'all' ? 'active' : ''}`} onClick={() => setPhoneFilter('all')}>HEPSİ</button>
+                  <button className={`pill has ${phoneFilter === 'has' ? 'active' : ''}`} onClick={() => setPhoneFilter('has')}>VAR</button>
+                  <button className={`pill none ${phoneFilter === 'none' ? 'active' : ''}`} onClick={() => setPhoneFilter('none')}>YOK</button>
+                </div>
+              </div>
+
+              <div className="filter-group">
+                <span className="filter-label">NOT</span>
+                <div className="filter-pills">
+                  <button className={`pill all ${noteFilter === 'all' ? 'active' : ''}`} onClick={() => setNoteFilter('all')}>HEPSİ</button>
+                  <button className={`pill has ${noteFilter === 'has' ? 'active' : ''}`} onClick={() => setNoteFilter('has')}>VAR</button>
+                  <button className={`pill none ${noteFilter === 'none' ? 'active' : ''}`} onClick={() => setNoteFilter('none')}>YOK</button>
                 </div>
               </div>
 
